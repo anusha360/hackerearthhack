@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="title" content="Virtual Queue">
+    <script src="js/app.js"></script>
+  <title>Airport Queue Management System</title>
+
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/main.css">
+
+</head>
+
+<body>
+
+  <div class="container content">
+    <header>
+      <h2>Airport QMS</h2>
+      <div>
+        <span class="pull-left title hidden">Hello #lname</span>
+        <button class="btn btn-warning reset-button pull-right hidden" type="button">Reset</button>
+      </div>
+      <br>
+      <hr>
+    </header>
+    <div class="container">
+      <div class="register">
+        <div class="form-group">
+            <input type="text" id="lname" class="form-control" placeholder="Enter your last name" value="WINSTER"></input>
+        </div>
+        <div class="form-group">
+            <input type="text" id="recloc" class="form-control" placeholder="Enter your PNR" value="23JVHZ"></input>
+        </div>
+        <div class="row">  
+          <div class="span4 offset4 text-center">
+            <button class="btn btn-large btn-success js-push-button" type="button" disabled>Register</button>
+          </div>
+        </div>
+      </div>
+      <div class="queue hidden">
+        <h1><span class="queuetoken">Token Number <span id="queuetoken" class="queueatr"></span> </span></h1>
+        <h1><span id="queuerank" class="queueatr"></span> to go</h1>
+        <h1><span id="queuetime" class="queueatr"></span> minutes left</h1>
+      </div>
+      <div class="promo hidden">
+        <h3>Meanwhile check what we have found for your baby!</h3>
+        <ul id="childpromo">
+        </ul>
+        <h3>Great discounts at our showrooms</h3>
+        <ul id="discountpromo">
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
