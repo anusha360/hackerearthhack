@@ -7,7 +7,7 @@ Mobile Web App to virtual queue management.
   - Chrome Web notifications
   - Websocket based instant updates
 
-It is complete JavaScript solution. Starting from raspberry pi, JavaScript is used in nodejs and eveb for database integration.
+It is complete JavaScript solution. Starting from bluetooth and GSM operations in raspberry pi, JavaScript is used in nodejs and even for database integration.
 
 > The goal of Virtual Queue Management solution is the hassle free airport experience for the traveler.
 > It also helps Airport authority to easily handle big crowd in security gates.
