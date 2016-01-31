@@ -88,6 +88,9 @@ window.addEventListener('load', function() {
         document.querySelector('#queuerank').textContent=queueStorage.token - result.pass;
         document.querySelector('#queuetime').textContent=(queueStorage.token - result.pass) *result.time;
       }
+      if(queueStorage.token-result.pass<=0) {
+        showWelcome();
+      }
       if((queueStorage.token - result.pass)<3)
         hidePromo();
       else
