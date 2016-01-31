@@ -91,3 +91,20 @@ h2{
 header h2{
   text-align:center;
 }
+.flight:before{
+  content:url('../img/flight.png'); 
+  position:relative; 
+  z-index:100000; 
+  left:-10px;
+  top:10px;
+}
+.boarding:before{
+  content:url('../img/boarding.png'); 
+  position:relative; 
+  z-index:100000; 
+  left:-10px;
+  top:10px;
+}
+.flight, .boarding {
+  font-size: 1.3em;
+}

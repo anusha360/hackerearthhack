@@ -19,14 +19,30 @@ var profilesRef = ref.child("profiles");
 var queueRef = ref.child("queue/");
 var passRef = ref.child("queue/passCount");
 var regRef = ref.child("queue/regCount");
+
+var firstTime = true;
 passRef.on('value', function(snapshot){
-  console.log('pass count updated');
-  //sendnotifs(null);   
+  var passCount = snapshot.val();
+  console.log('pass count listener::'+passCount);
+  if(firstTime) {
+    firstTime=false;
+    return;
+  }
+  profilesRef.orderByChild("token").startAt(passCount).endAt(passCount+3).on("value", function(snapshot) {
+    var regids = [];
+    snapshot.forEach(function(data) {
+      console.log(data.key() + " :: " + data.val());
+      var profile = data.val();
+      regids.push(profile.regId);  
+    });
+    var message = new gcm.Message();
+    message.addData('data', passCount);
+    sendnotifs(message, regids); 
+  });
 });
 regRef.on('value', function(snapshot){
-  console.log('new registration');
+  console.log('reg count listener');
 });
-
 app.get('/', function(request, response) {
   response.render('public/index.html');
 });
@@ -98,9 +114,10 @@ app.post('/initqueue', function(request, response) {
     var queue = snapshot.val();
     queue.passCount = req.passCount;
     queue.regCount = req.regCount;
+    queue.avgTime = req.avgTime;
     queueRef.set(queue);        
     response.send('updated');
-    broadcast();
+    broadcast(queue);
   });
 });
 
@@ -169,30 +186,14 @@ var retrieveTrip = function(lname, recloc) {
   });  
 };
 
-var sendnotifs = function(queue){
-  profilesRef.once('value', function(snapshot){
-    var profiles = snapshot.val();
-    var regids = [];
-    for(var key in profiles) {
-      if(profiles.hasOwnProperty(key)) {
-        var profile = profiles[key];
-        regids.push(profile.regId);  
-      }
-    }
-    //console.log('regids :::'+regids);  
-    console.log(queue);  
-    // Now the sender can be used to send messages
-    var message = new gcm.Message();
-    message.addData('data', JSON.stringify(queue));
-    sender.send(message, { registrationTokens: regids }, function (err, res) {
-        debugger;
-        if(err) 
-          console.error(err);
-        else    
-          console.log(res);
-        console.log('notifications sent to '+regids);
-    });    
-  });
+var sendnotifs = function(message, regids){
+  sender.send(message, { registrationTokens: regids }, function (err, res) {
+    if(err) 
+      console.error(err);
+    else    
+      console.log(res);
+    console.log('notifications sent to '+regids);
+  });    
 }
 
 var broadcast=function(queue){

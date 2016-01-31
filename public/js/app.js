@@ -259,7 +259,10 @@ function httprequest(url, params, showqueue){
             document.querySelector('#queuetoken').textContent=queue.token;
             document.querySelector('#queuerank').textContent=queue.token-queue.pass;
             document.querySelector('#queuetime').textContent=(queue.token-queue.pass) * queue.time;
-            showQueue();
+            if(queue.token-queue.pass<=0) {
+              showWelcome();
+            } else 
+              showQueue();
           } else{
             showRegister();
           }
@@ -273,6 +276,7 @@ function showQueue(){
   document.querySelector('.queue').classList.remove('hidden');                
   document.querySelector('.title').classList.remove('hidden');
   document.querySelector('.reset-button').classList.remove('hidden');   
+  document.querySelector('.welcome').classList.add('hidden');    
 }
 
 function showRegister(){
@@ -281,6 +285,15 @@ function showRegister(){
   document.querySelector('.promo').classList.add('hidden'); 
   document.querySelector('.title').classList.add('hidden');   
   document.querySelector('.reset-button').classList.add('hidden');   
+  document.querySelector('.welcome').classList.add('hidden');    
+}
+
+function showWelcome(){
+  document.querySelector('.register').classList.add('hidden');
+  document.querySelector('.queue').classList.add('hidden');                
+  document.querySelector('.title').classList.add('hidden');
+  document.querySelector('.reset-button').classList.remove('hidden');    
+  document.querySelector('.welcome').classList.remove('hidden');    
 }
 
 function hidePromo() {        
