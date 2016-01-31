@@ -8,7 +8,7 @@ Mobile Web App to virtual queue management.
   - Websocket based instant updates
 
 ### Raspberry PI code
-  Please visit [Git Repo][site]
+  This is server repo. For client(IOT), please visit [Git Repo][site]
 
 It is complete JavaScript solution. Starting from bluetooth and GSM operations in raspberry pi, JavaScript is used in nodejs and even for database integration.
 
@@ -38,7 +38,6 @@ License
 MIT
 
 
-**Hail Open Software!**
 
    [site]: <https://github.com/winster/hackerearthhackR.git>
    [bootstrap]: <http://getbootstrap.com/>

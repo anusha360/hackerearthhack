@@ -85,6 +85,9 @@ ul li img {
   left:-10px;
   top:10px;
 }
-h1{
+h2{
   text-align:left;
+}
+header h2{
+  text-align:center;
 }
