@@ -26,7 +26,7 @@ var promoRef = ref.child("promo/");
 var firstTime = true;
 passRef.on('value', function(snapshot){
   var passCount = snapshot.val();
-  console.log('pass count listener::'+passCount);
+  console.log('firstTime::'+firstTime);
   if(firstTime) {
     firstTime=false;
     return;
@@ -129,7 +129,9 @@ app.post('/initqueue', function(request, response) {
 });
 
 app.post('/pass', function(request, response) {
+  debugger;
   queueRef.once('value', function(snapshot){
+    debugger;
     var queue = snapshot.val();
     queue.passCount += 1;
     queueRef.set(queue);     
@@ -179,6 +181,7 @@ var sendnotifs = function(message, regids){
 }
 
 var broadcast=function(queue){
+  debugger;
   var data = {pass:queue.passCount, time:queue.avgTime};
   websocket.send(JSON.stringify(data), function() {});
 }
