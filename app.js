@@ -8,6 +8,8 @@ var Firebase = require("firebase");
 var app = express();
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
+var Q = require("q");
+var soap = require('soap');
 
 var port = process.env.PORT || 5000;
 var gcmKey = 'AIzaSyCEEkwC2sW4SZfl2cjPfaJS3Cl5hvsYNew';
@@ -19,6 +21,7 @@ var profilesRef = ref.child("profiles");
 var queueRef = ref.child("queue/");
 var passRef = ref.child("queue/passCount");
 var regRef = ref.child("queue/regCount");
+var promoRef = ref.child("promo/");
 
 var firstTime = true;
 passRef.on('value', function(snapshot){
@@ -59,6 +62,11 @@ app.post('/register', function(request, response) {
   var registrationId = endpointParts[endpointParts.length - 1];  
   req.regId = registrationId;
   var profileRef = profilesRef.child(req.recloc);
+
+  retrieveTrip(req.lname, req.recloc)
+  .then(function(msg){broadcastAds()})  
+  .catch(function(msg){});
+
   queueRef.once('value', function(snapshot){
     var queue = snapshot.val();
     profileRef.once('value', function(snapshot){
@@ -80,7 +88,6 @@ app.post('/register', function(request, response) {
       }
     });
   });
-  //retrieveTrip(req.lname, req.recloc);  
 });
 
 app.post('/unregister', function(request, response) {
@@ -152,38 +159,13 @@ wss.on("connection", function(ws) {
   });
 })
 
-app.get('/retrieve', function(request, response) {
-  retrieveTrip();  
-  response.send('calling');
-});
-
-var SABRE_API = 'XXXXXXYYYYYY'; //get it from sabre dev studio
+var SABRE_API = 'https://sws3-crt.cert.sabre.com';
 var retrieveTrip = function(lname, recloc) {
+  var d=Q.defer();
   var trip='';
-  https.get('https://xyz',
-       function(res){
-          //console.log("statusCode: ", res.statusCode);
-          //console.log("headers: ", res.headers);
-
-          res.on('data', function(d) {
-            trip+=d;
-          });
-          res.on('end', function () {
-            console.log(trip);
-            trip = JSON.parse(trip);
-            if(trip.travelers) {
-              trip.travelers.map(function(traveler) {
-                if(traveler.type=='CHILD') {
-                  if(queuerank>3)
-                  broadcastAds(traveler);
-                }
-              });
-            }
-          });
-       }
-  ).on('error', function(e) {
-    console.error(e);
-  });  
+  //make SOAP call
+  d.resolve({message:'success'});
+  return d.promise;
 };
 
 var sendnotifs = function(message, regids){
@@ -202,28 +184,10 @@ var broadcast=function(queue){
 }
 
 var broadcastAds = function(traveler){
-  var promo=[
-  {
-    url: 'img/baby1.jpg',
-    type:'child',
-    title:'Showroom dedicated to babies'
-  },
-  {
-    url: 'img/baby2.jpg',
-    type:'child',
-    title:'Clothes at great discount'
-  },
-  {
-    url: 'img/baby3.jpg',
-    type:'child',
-    title:'Play area for babies'
-  },
-  {
-    url: 'img/discount.jpg',
-    type:'discount',
-    title:'Awesome discount!!!'
-  }
-  ];
-  var result = {promo: promo};
-  websocket.send(JSON.stringify(result), function() {  });
+  debugger;
+  promoRef.once('value', function(snapshot){
+    var promos = snapshot.val();
+    var result = {promo: promos};
+    websocket.send(JSON.stringify(result), function() {  });
+  });  
 }

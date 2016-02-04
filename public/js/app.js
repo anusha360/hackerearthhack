@@ -97,30 +97,36 @@ window.addEventListener('load', function() {
         showPromo();
     }
     if(result.promo) {
-      result.promo.map(function(promo){
-        console.log(promo.url); 
-        var parentul;
-        if(promo.type==='child') 
-          parentul = document.querySelector('#childpromo');
-        if(promo.type==='discount') 
-          parentul = document.querySelector('#discountpromo');
-        
-        var childli=document.createElement("li");
-        var childimage=document.createElement("img");
-        var childtitle=document.createElement("span");
-        childtitle.textContent = promo.title;
-        childimage.src=promo.url;
-        childli.appendChild(childtitle);
-        childli.appendChild(childimage);
-        parentul.appendChild(childli);
-        document.querySelector('.promo').classList.remove('hidden');
-      });
+      for(var key in result.promo){
+        if(result.promo.hasOwnProperty(key)){
+          var promo = result.promo[key];
+          var parentul= document.querySelector('.swiper-wrapper');
+          var source   = document.querySelector("#entry-template").innerHTML;
+          var template = Handlebars.compile(source);
+          var html    = template(promo);
+          parentul.innerHTML += html;
+          document.querySelector('.promos').classList.remove('hidden');
+          var mySwiper = new Swiper ('.swiper-container', {
+              // Optional parameters
+              direction: 'horizontal',
+              loop: true,
+              
+              // If we need pagination
+              pagination: '.swiper-pagination',
+              
+              // Navigation arrows
+              nextButton: '.swiper-button-next',
+              prevButton: '.swiper-button-prev',
+              
+              // And if we need scrollbar
+              scrollbar: '.swiper-scrollbar',
+            });   
+        }
+      }
     }
   };
-
   if(getQueryVariable('rank')<3)
     hidePromo();
-
 });
 
 function getQueryVariable(variable) {
@@ -306,3 +312,4 @@ function hidePromo() {
 function showPromo() {        
   document.querySelector('.promo').classList.remove('hidden');     
 }
+     
