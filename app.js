@@ -140,11 +140,20 @@ app.post('/exit', function(request, response) {
 });
 
 app.get('/token', function(request, response) {
+  getQueueData()
+  .then(function(count){
+    response.send(''+count);
+  });
+});
+
+var getQueueData = function(){
+  var q = Q.defer();
   queueRef.once('value', function(snapshot){
     var queue = snapshot.val();
-    response.send(queue.passCount+1);
-  });  
-});
+    q.resolve(queue.passCount+1);  
+  });
+  return q.promise;
+};
 
 /*app.listen(port, function() {
   console.log('Node app is running on port', port);
