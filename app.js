@@ -139,7 +139,7 @@ app.post('/exit', function(request, response) {
   console.log('queue updated');
 });
 
-app.post('/token', function(request, response) {
+app.get('/token', function(request, response) {
   queueRef.once('value', function(snapshot){
     var queue = snapshot.val();
     response.send(queue.passCount+1);
