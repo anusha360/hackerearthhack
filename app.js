@@ -197,6 +197,7 @@ var sendnotifs = function(message, regids){
 var broadcast=function(queue){
   debugger;
   var data = {pass:queue.passCount, time:queue.avgTime};
+  if(websocket)
   websocket.send(JSON.stringify(data), function() {});
 }
 
@@ -205,6 +206,7 @@ var broadcastAds = function(traveler){
   promoRef.once('value', function(snapshot){
     var promos = snapshot.val();
     var result = {promo: promos};
+    if(websocket)
     websocket.send(JSON.stringify(result), function() {  });
   });  
 }
