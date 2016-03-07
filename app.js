@@ -128,10 +128,8 @@ app.post('/initqueue', function(request, response) {
   });
 });
 
-app.post('/pass', function(request, response) {
-  debugger;
+app.post('/exit', function(request, response) {
   queueRef.once('value', function(snapshot){
-    debugger;
     var queue = snapshot.val();
     queue.passCount += 1;
     queueRef.set(queue);     
@@ -139,6 +137,13 @@ app.post('/pass', function(request, response) {
   });  
   response.send('updated');
   console.log('queue updated');
+});
+
+app.post('/token', function(request, response) {
+  queueRef.once('value', function(snapshot){
+    var queue = snapshot.val();
+    response.send(queue.passCount+1);
+  });  
 });
 
 /*app.listen(port, function() {
