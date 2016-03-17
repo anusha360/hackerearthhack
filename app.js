@@ -150,7 +150,7 @@ var getQueueData = function(){
   var q = Q.defer();
   queueRef.once('value', function(snapshot){
     var queue = snapshot.val();
-    q.resolve(queue.passCount+1);  
+    q.resolve(queue.passCount);  
   });
   return q.promise;
 };
