@@ -107,3 +107,6 @@ header h2{
     width: 400px;
     height: 300px;
 }  
+.boardingtime{
+  font-weight: bold;
+}
