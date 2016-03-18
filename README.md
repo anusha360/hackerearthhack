@@ -39,7 +39,7 @@ MIT
 
 
 
-   [site]: <https://github.com/winster/hackerearthhackR.git>
+   [site]: <https://github.com/winster/vqms_iot.git>
    [bootstrap]: <http://getbootstrap.com/>
    [service worker]: <https://www.w3.org/TR/service-workers/>
    [Websockets]: <https://html.spec.whatwg.org/multipage/comms.html#network>
